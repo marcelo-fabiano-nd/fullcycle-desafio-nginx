@@ -1,5 +1,5 @@
 FROM node:17.4
-WORKDIR /usr/srv/app
+WORKDIR /usr/src/app
 
 # atualiza o sitema operacional para instalação do DOCKERIZE
 RUN apt-get update && apt-get install -y wget
@@ -12,6 +12,3 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 # expõe a porta 5000
 EXPOSE 5000
-
-# inicializa o aplicativo
-CMD ["node", "index.js"]

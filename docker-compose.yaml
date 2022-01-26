@@ -6,13 +6,13 @@ services:
       context: node
     image: nossadiretiva/fullcycle-node:v1
     container_name: fullcycle-node
-    entrypoint: dockerize -wait tcp://fullcycle-mysql:3306 -timeout 10s docker-entrypoint.sh
+    entrypoint: bash -c "npm install && dockerize -wait tcp://fullcycle-mysql:3306 -timeout 10s node index.js"
     depends_on:
       - database
     networks:
       - fullcycle-net
     volumes:
-      - ./node:/usr/srv/app
+      - ./node:/usr/src/app
     ports:
       - 5000:5000
     tty: true

@@ -47,7 +47,7 @@ Arquivo *nginx.conf*:
 Para a criação da imagem *node* foi utilizado o seguinte *Dockerfile*: 
 
     FROM node:17.4
-    WORKDIR /usr/srv/app
+    WORKDIR /usr/src/app
     
     # atualiza o sitema operacional para instalação do DOCKERIZE
     RUN apt-get update && apt-get install -y wget
@@ -60,9 +60,6 @@ Para a criação da imagem *node* foi utilizado o seguinte *Dockerfile*:
     
     # expõe a porta 5000
     EXPOSE 5000
-    
-    # inicializa o aplicativo
-    CMD ["node", "index.js"]
 
 > Para a construção do container para utilização do *MySQL* foi criado um arquivo de *script* de inicialização que contém a criação da tabela ***people*** que será utilizada na aplicação.
 
@@ -83,13 +80,13 @@ Para criação do ambiente do desafio foi utilizado o seguinte arquivo de manife
           context: node
         image: nossadiretiva/fullcycle-node:v1
         container_name: fullcycle-node
-        entrypoint: dockerize -wait tcp://fullcycle-mysql:3306 -timeout 10s docker-entrypoint.sh
+        entrypoint: bash -c "npm install && dockerize -wait tcp://fullcycle-mysql:3306 -timeout 10s node index.js"
         depends_on:
           - database
         networks:
           - fullcycle-net
         volumes:
-          - ./node:/usr/srv/app
+          - ./node:/usr/src/app
         ports:
           - 5000:5000
         tty: true
